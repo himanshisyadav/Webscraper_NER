@@ -21,7 +21,7 @@ python3 NER_training.py
 Obtain base_config.cfg from https://spacy.io/usage/training 
 
 ```
-python -m spacy init fill-config base_config.cfg data/config.cfg
+python3 -m spacy init fill-config base_config.cfg data/config.cfg
 ```
 ```
 python3 -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy --output models
