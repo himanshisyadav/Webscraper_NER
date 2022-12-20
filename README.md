@@ -4,13 +4,13 @@ This repository contains the code and documentation for the Webscraping for Rent
 
 ## How to Run
 
-Clone the repository on your system
+1. Clone the repository on your system
 
 ```
 git clone git@github.com:himanshisyadav/Webscraper_NER.git
 ```
 
-Create a ```conda``` environment using the ```requirements.txt``` file in the [code](code/) folder.
+2. Create a ```conda``` environment using the ```requirements.txt``` file in the [code](code/) folder.
 ```
 cd code/
 conda create --name <env> --file requirements.txt
@@ -18,7 +18,9 @@ conda create --name <env> --file requirements.txt
 ```
 python3 NER_training.py
 ```
-Obtain base_config.cfg from https://spacy.io/usage/training 
+
+3. Obtain base_config.cfg from https://spacy.io/usage/training 
+4. Run training code
 
 ```
 python3 -m spacy init fill-config base_config.cfg data/config.cfg
