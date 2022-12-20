@@ -17,7 +17,7 @@ import re
 
 # !pip3 install -U spacy
 import spacy
-
+import pdb
 from time import sleep
 from os import path
 from pandas import DataFrame
@@ -78,22 +78,17 @@ page_2015 ="https://web.archive.org/web/20150217144133/https://www.apartments.co
 page_2022 = 'https://web.archive.org/web/20220819053652/https://www.apartments.com/chicago-il/'
 
 
-# In[30]:
-
-
-import spacy
-from spacy import displacy
-nlp = spacy.load("en_core_web_sm")
-# print(nlp.pipe_names)
-ner = nlp.get_pipe("ner")
-
-
-# In[16]:
+# Columns in the 2015 and 2022 dataframes
+# Index(['Unnamed: 0', 'snapshot_link', 'owner', 'address', 'price_range',
+#        'bed_range', 'amenities', 'contact', 'property_link', 'name'],
+#       dtype='object')
 
 
 info_2015 = pd.read_csv("../training_data/Info_2015.csv", sep = '\t')
 info_2022 = pd.read_csv("../training_data/Info_2022.csv", sep = '\t')
-
+info_2015 = info_2015.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
+info_2022 = info_2022.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
+# pdb.set_trace()
 
 # In[18]:
 
