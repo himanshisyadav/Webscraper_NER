@@ -84,7 +84,7 @@ page_2022 = 'https://web.archive.org/web/20220819053652/https://www.apartments.c
 import spacy
 from spacy import displacy
 nlp = spacy.load("en_core_web_sm")
-print(nlp.pipe_names)
+# print(nlp.pipe_names)
 ner = nlp.get_pipe("ner")
 
 
@@ -153,4 +153,4 @@ db.to_disk('./valid.spacy')
 # In[ ]:
 
 
-# python -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy
+# pythonn -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy
