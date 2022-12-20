@@ -37,7 +37,7 @@ def convert_to_ner_data_thiya(df):
     simple_data = list()
     for col in df.columns:
     	if col == 'Company': 
-    		new_name = 'name'
+    		new_name = 'owner'
     	else:
     		new_name = col
     	if col != 'Unnamed: 0' and col != 'Name':
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 	test_data_craig_simple = convert_to_ner_data_craig(info_craig)
 	test_data_thiya_simple = convert_to_ner_data_thiya(info_thiya)
 
-	nlp = spacy.load("models/output/model-last/")
+	nlp = spacy.load("models/model-best")
 
 	# pdb.set_trace()
 
