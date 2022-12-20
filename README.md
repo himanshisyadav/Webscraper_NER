@@ -4,8 +4,10 @@ This repository contains the code and documentation for the Webscraping for Rent
 
 ## How to Run
 
-Create a ```conda``` environment using the ```requirements.txt``` file in the [code](code/) folder. 
-
+Create a ```conda``` environment using the ```requirements.txt``` file in the [code](code/) folder.
+```
+conda create --name <env> --file requirements.txt
+```
 ```
 python3 NER_training.py
 ```
