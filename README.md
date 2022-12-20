@@ -28,3 +28,12 @@ python3 -m spacy init fill-config base_config.cfg data/config.cfg
 ```
 python3 -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy --output models
 ```
+
+## How to Visualize with Jupyter Notebook
+
+1. To open a notebook, run
+
+```
+jupyter notebook
+```
+2. Select a ```.ipynb``` file to open, edit and visualize test results.
