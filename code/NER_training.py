@@ -91,8 +91,8 @@ ner = nlp.get_pipe("ner")
 # In[16]:
 
 
-info_2015 = pd.read_csv("Info_2015.csv", sep = '\t')
-info_2022 = pd.read_csv("Info_2022.csv", sep = '\t')
+info_2015 = pd.read_csv("../training_data/Info_2015.csv", sep = '\t')
+info_2022 = pd.read_csv("../training_data/Info_2022.csv", sep = '\t')
 
 
 # In[18]:
@@ -147,10 +147,10 @@ db.to_disk('./valid.spacy')
 # In[42]:
 
 
-get_ipython().system('python -m spacy init fill-config base_config.cfg data/config.cfg')
+# python -m spacy init fill-config base_config.cfg data/config.cfg
 
 
 # In[ ]:
 
 
-get_ipython().system('python -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy')
+# python -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy
