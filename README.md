@@ -4,8 +4,15 @@ This repository contains the code and documentation for the Webscraping for Rent
 
 ## How to Run
 
+Clone the repository on your system
+
+```
+git clone git@github.com:himanshisyadav/Webscraper_NER.git
+```
+
 Create a ```conda``` environment using the ```requirements.txt``` file in the [code](code/) folder.
 ```
+cd code/
 conda create --name <env> --file requirements.txt
 ```
 ```
