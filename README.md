@@ -37,3 +37,7 @@ python3 -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev .
 jupyter notebook
 ```
 2. Select a ```.ipynb``` file to open, edit and visualize test results.
+
+## Language Model for Entity Classifier
+
+GitHub Repository for the pretrained language model: https://github.com/microsoft/unilm/tree/master/markuplm
