@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "Markup_LM_native_pytorch.py", line 1, in <module>
+    from transformers import AutoProcessor, AutoModelForTokenClassification, get_scheduler
+ImportError: cannot import name 'AutoProcessor' from 'transformers' (/software/python-anaconda-2022.05-el8-x86_64/envs/markuplmft/lib/python3.7/site-packages/transformers/__init__.py)
