@@ -75,7 +75,7 @@ model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/mar
 
 optimizer = AdamW(model.parameters(), lr=5e-5)
 
-num_epochs = 3
+num_epochs = 1
 num_training_steps = num_epochs * len(train_labels)
 lr_scheduler = get_scheduler(
     name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
@@ -98,20 +98,17 @@ for epoch in range(num_epochs):
     optimizer.zero_grad()
     progress_bar.update(1)
 
-
+torch.save(model.state_dict(), "model.pt")
 
 metric = evaluate.load("accuracy")
 model.eval()
-for batch in eval_dataloader:
-    batch = {k: v.to(device) for k, v in batch.items()}
-    with torch.no_grad():
-        outputs = model(**batch)
+with torch.no_grad():
+    outputs = model(**val_encodings)
 
-    logits = outputs.logits
-    predictions = torch.argmax(logits, dim=-1)
-    metric.add_batch(predictions=predictions, references=batch["labels"])
+logits = outputs.logits
+predictions = torch.argmax(logits, dim=-1)
+print(metric.compute(predictions=torch.squeeze(predictions), references=torch.squeeze(val_encodings.labels)))
 
-metric.compute()
 
 
 
