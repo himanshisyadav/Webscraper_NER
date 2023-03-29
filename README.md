@@ -38,10 +38,10 @@ jupyter notebook
 ```
 2. Select a ```.ipynb``` file to open, edit and visualize test results.
 
-# MarkupLM Language Model for Entity Classification
+## MarkupLM Language Model for Entity Classification
 
 GitHub Repository for the pretrained language model: https://github.com/microsoft/unilm/tree/master/markuplm
 
-## How to Run MarkupLM Pipeline
+### How to Run MarkupLM Pipeline
 
 
