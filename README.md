@@ -2,7 +2,7 @@
 
 This repository contains the code and documentation for the Webscraping for Rental Property Data project with Prof. Milena Almagro at University of Chicago Booth School of Business in collaboration with Research Computing Center. 
 
-## How to Run
+## How to Run Spacy Pipeline
 
 1. Clone the repository on your system
 
@@ -38,6 +38,10 @@ jupyter notebook
 ```
 2. Select a ```.ipynb``` file to open, edit and visualize test results.
 
-## Language Model for Entity Classifier
+# MarkupLM Language Model for Entity Classification
 
 GitHub Repository for the pretrained language model: https://github.com/microsoft/unilm/tree/master/markuplm
+
+## How to Run MarkupLM Pipeline
+
+
