@@ -14,4 +14,5 @@ Steps:
     * Beds
     * Amenities
     * Contact
+6. Consult the data from info_2015.csv and info_2022.csv to correctly label this new dataset
 
