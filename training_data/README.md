@@ -18,5 +18,6 @@ Steps:
 7. Division of files:
    * Himi: 20150217144133_nodes_xpaths.csv
    * Katy: 20220121035604_nodes_xpaths.csv (started)
+            20220321160908_nodes_xpaths.csv (started)
    * Stancy:
    * Fern: 
