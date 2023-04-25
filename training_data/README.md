@@ -17,6 +17,7 @@ Steps:
 6. Consult the data from info_2015.csv and info_2022.csv to correctly label this new dataset
 7. Division of files:
    * Himi: 20150217144133_nodes_xpaths.csv
-   * Katy:
+   * Katy: 20220121035604_nodes_xpaths.csv (started)
+            20220321160908_nodes_xpaths.csv (started)
    * Stancy:
    * Fern: 
