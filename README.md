@@ -28,6 +28,11 @@ python3 -m spacy init fill-config base_config.cfg data/config.cfg
 ```
 python3 -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy --output models
 ```
+5. To update the ```requirements.txt``` file in [code](code/) folder, run
+
+```
+conda list --explicit > requirements.txt
+```
 
 ## How to Visualize with Jupyter Notebook
 
