@@ -84,7 +84,7 @@ model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/mar
 
 optimizer = AdamW(model.parameters(), lr=5e-5)
 
-num_epochs = 10
+num_epochs = 0
 num_training_steps = num_epochs * len(train_labels)
 lr_scheduler = get_scheduler(
     name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
@@ -121,6 +121,9 @@ else:
     logits = outputs.logits
     predictions = torch.argmax(logits, dim=-1)
     print(metric.compute(predictions=torch.squeeze(predictions), references=torch.squeeze(val_encodings.labels)))
+
+    df_outputs = pd.DataFrame({'logits':  logits.flatten(), 'predictions': predictions}, index=[0])
+    df.to_csv("./outputs/predictions_model.csv")
 
 
 
