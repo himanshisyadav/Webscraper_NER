@@ -35,12 +35,21 @@ class HTMLDataset(torch.utils.data.Dataset):
 # xpaths = ["/html/body/div/li[1]/div/span", "/html/body/div/li[1]/div/span"]
 # node_labels = [1, 2]
 
-nodes_xpaths = pd.read_csv("nodes_xpaths_test.csv", delimiter="\t")
-nodes_xpaths = nodes_xpaths.replace(np.nan, "", regex=True)
+# nodes_xpaths = pd.read_csv("nodes_xpaths_test.csv", delimiter="\t")
+nodes_xpaths = pd.read_csv("../training_data/nodes_xpaths/Labeled_20150217144133_nodes_xpaths.csv",delimiter=",")
+
+nodes_xpaths['Labels'].replace(['Address', 'Beds', 'Contact', 'NE', 'Name', 'Price'], [0, 1, 2, 3, 4, 5], inplace=True)
+
+# pdb.set_trace()
+
+nodes_xpaths = nodes_xpaths.dropna()
+
+# pdb.set_trace()
 
 nodes = nodes_xpaths['nodes'].values.tolist()
 xpaths = nodes_xpaths['xpaths'].values.tolist()
-node_labels = [0] * len(nodes_xpaths)
+node_labels = nodes_xpaths['Labels'].values.tolist()
+
 
 train_split_cent, val_split_cent, test_split_cent = 0.8, 0.1, 0.1
 indices = list(range(len(nodes)))
@@ -71,11 +80,11 @@ test_labels = node_labels[ int(np.floor((train_split_cent + val_split_cent) * le
 # val_dataloader = DataLoader(val_dataset, shuffle=True, batch_size=8)
 # test_dataloader = DataLoader(test_dataset, shuffle=True, batch_size=8)
 
-model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/markuplm-base", num_labels=1)
+model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/markuplm-base", num_labels=6)
 
 optimizer = AdamW(model.parameters(), lr=5e-5)
 
-num_epochs = 1
+num_epochs = 10
 num_training_steps = num_epochs * len(train_labels)
 lr_scheduler = get_scheduler(
     name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
@@ -84,30 +93,34 @@ lr_scheduler = get_scheduler(
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 model.to(device)
 
-progress_bar = tqdm(range(num_training_steps))
+train = False
 
-model.train()
-
-for epoch in range(num_epochs):
-    train_encodings.to(device)
-    outputs = model(**train_encodings)
-    loss = outputs.loss
-    loss.backward()
-    optimizer.step()
-    lr_scheduler.step()
-    optimizer.zero_grad()
-    progress_bar.update(1)
-
-torch.save(model.state_dict(), "model.pt")
-
-metric = evaluate.load("accuracy")
-model.eval()
-with torch.no_grad():
-    outputs = model(**val_encodings)
-
-logits = outputs.logits
-predictions = torch.argmax(logits, dim=-1)
-print(metric.compute(predictions=torch.squeeze(predictions), references=torch.squeeze(val_encodings.labels)))
+if train: 
+    model.train()
+    progress_bar = tqdm(range(num_training_steps))
+    print("\nTraining...")
+    for epoch in range(num_epochs):
+        train_encodings.to(device)
+        outputs = model(**train_encodings)
+        loss = outputs.loss
+        loss.backward()
+        optimizer.step()
+        lr_scheduler.step()
+        optimizer.zero_grad()
+        progress_bar.update(1)
+    torch.save(model.state_dict(), "model_10_epochs.pt")
+    train = False
+else:
+    model.load_state_dict(torch.load("model.pt"))
+    metric = evaluate.load("accuracy")
+    model.eval()
+    print("\nEvaluating...")
+    model.to(torch.device('cpu'))
+    with torch.no_grad():
+        outputs = model(**val_encodings)
+    logits = outputs.logits
+    predictions = torch.argmax(logits, dim=-1)
+    print(metric.compute(predictions=torch.squeeze(predictions), references=torch.squeeze(val_encodings.labels)))
 
 
 
