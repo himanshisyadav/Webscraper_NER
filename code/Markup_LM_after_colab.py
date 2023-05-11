@@ -1,4 +1,4 @@
-from transformers import AutoProcessor, AutoModelForTokenClassification, get_scheduler, MarkupLMProcessor
+from transformers import AutoProcessor, AutoModelForTokenClassification, get_scheduler, MarkupLMProcessor, MarkupLMTokenizerFast
 import torch
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import AdamW
@@ -110,7 +110,7 @@ def main():
     node_labels = [item for sublist in node_labels for item in sublist]
 
     for i in range(len(nodes)):
-    data.append({'nodes': nodes[i], 'xpaths': xpaths[i], 'node_labels': node_labels[i]})
+        data.append({'nodes': nodes[i], 'xpaths': xpaths[i], 'node_labels': node_labels[i]})
 
     processor = MarkupLMProcessor.from_pretrained("/project/rcc/hyadav/markuplm-base")
     processor.parse_html = False
@@ -118,7 +118,7 @@ def main():
     tokenizer = MarkupLMTokenizerFast.from_pretrained("/project/rcc/hyadav/markuplm-base")
     dataset = MarkupLMDataset(data=data, processor=processor, max_length=512, tokenizer=tokenizer)
 
-    dataloader = DataLoader(dataset, batch_size=5, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=10, shuffle=True)
 
     model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/markuplm-base", num_labels=7)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -134,7 +134,7 @@ def main():
 
     model.train()
 
-    for epoch in range(10):  # loop over the dataset multiple times
+    for epoch in range(1):  # loop over the dataset multiple times
         for batch in tqdm(dataloader):
             # get the inputs;
             inputs = {k:v.to(device) for k,v in batch.items()}
@@ -161,8 +161,8 @@ def main():
             predictions = outputs.logits.argmax(dim=-1)
             labels = batch["labels"]
             preds, refs = get_labels(label_list, predictions, labels, device)
-            metric = evaluate.load("seqeval")
-            metric.add_batch( predictions=preds, references=refs,)
+            metric = evaluate.load("/project/rcc/hyadav/evaluate/metrics/seqeval/seqeval.py")
+            metric.add_batch(predictions=preds, references=refs,)
 
         eval_metric = compute_metrics()
         print(f"Epoch {epoch}:", eval_metric)
