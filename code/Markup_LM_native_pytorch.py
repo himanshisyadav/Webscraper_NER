@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 import evaluate
 import pdb
+import glob
+from optimum.bettertransformer import BetterTransformer
 
 from tqdm.auto import tqdm
 
@@ -36,9 +38,20 @@ class HTMLDataset(torch.utils.data.Dataset):
 # node_labels = [1, 2]
 
 # nodes_xpaths = pd.read_csv("nodes_xpaths_test.csv", delimiter="\t")
-nodes_xpaths = pd.read_csv("../training_data/nodes_xpaths/Labeled_20150217144133_nodes_xpaths.csv",delimiter=",")
+files = glob.glob("../training_data/nodes_xpaths/Labeled_*.csv")
 
-nodes_xpaths['Labels'].replace(['Address', 'Beds', 'Contact', 'NE', 'Name', 'Price'], [0, 1, 2, 3, 4, 5], inplace=True)
+df = pd.DataFrame()
+
+for file in files:
+    nodes_xpaths = pd.read_csv(file,delimiter=",")
+    frames = [df, nodes_xpaths]
+    df = pd.concat(frames, ignore_index=True)
+
+nodes_xpaths = df    
+
+# nodes_xpaths = pd.read_csv("../training_data/nodes_xpaths/Labeled_20150217144133_nodes_xpaths.csv",delimiter=",")
+
+nodes_xpaths['Labels'].replace(['Address', 'Beds', 'Contact', 'NE', 'Name', 'Price', 'Amenities'], [0, 1, 2, 3, 4, 5, 6], inplace=True)
 
 # pdb.set_trace()
 
@@ -49,7 +62,6 @@ nodes_xpaths = nodes_xpaths.dropna()
 nodes = nodes_xpaths['nodes'].values.tolist()
 xpaths = nodes_xpaths['xpaths'].values.tolist()
 node_labels = nodes_xpaths['Labels'].values.tolist()
-
 
 train_split_cent, val_split_cent, test_split_cent = 0.8, 0.1, 0.1
 indices = list(range(len(nodes)))
@@ -80,11 +92,12 @@ test_labels = node_labels[ int(np.floor((train_split_cent + val_split_cent) * le
 # val_dataloader = DataLoader(val_dataset, shuffle=True, batch_size=8)
 # test_dataloader = DataLoader(test_dataset, shuffle=True, batch_size=8)
 
-model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/markuplm-base", num_labels=6)
+model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/markuplm-base", num_labels=7)
+# model = BetterTransformer.transform(model_hf, keep_original_model=True)
 
 optimizer = AdamW(model.parameters(), lr=5e-5)
 
-num_epochs = 0
+num_epochs = 3
 num_training_steps = num_epochs * len(train_labels)
 lr_scheduler = get_scheduler(
     name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
@@ -93,37 +106,40 @@ lr_scheduler = get_scheduler(
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 model.to(device)
 
-train = False
+model.train()
 
-if train: 
-    model.train()
-    progress_bar = tqdm(range(num_training_steps))
-    print("\nTraining...")
-    for epoch in range(num_epochs):
-        train_encodings.to(device)
-        outputs = model(**train_encodings)
-        loss = outputs.loss
-        loss.backward()
-        optimizer.step()
-        lr_scheduler.step()
-        optimizer.zero_grad()
-        progress_bar.update(1)
-    torch.save(model.state_dict(), "model_10_epochs.pt")
-    train = False
-else:
-    model.load_state_dict(torch.load("model.pt"))
-    metric = evaluate.load("accuracy")
-    model.eval()
-    print("\nEvaluating...")
-    model.to(torch.device('cpu'))
-    with torch.no_grad():
-        outputs = model(**val_encodings)
-    logits = outputs.logits
-    predictions = torch.argmax(logits, dim=-1)
-    print(metric.compute(predictions=torch.squeeze(predictions), references=torch.squeeze(val_encodings.labels)))
+progress_bar = tqdm(range(num_training_steps))
+print("\nTraining...")
+for epoch in range(num_epochs):
+    print("Here")
+    train_encodings.to(device)
+    outputs = model(**train_encodings)
+    loss = outputs.loss
+    print(loss)
+    loss.backward()
+    optimizer.step()
+    lr_scheduler.step()
+    optimizer.zero_grad()
+    progress_bar.update(1)
+    progress_bar.close()
+torch.save(model.state_dict(), "model_1_epoch_more_data.pt")
 
-    df_outputs = pd.DataFrame({'logits':  logits.flatten(), 'predictions': predictions}, index=[0])
-    df.to_csv("./outputs/predictions_model.csv")
+print("Loading Model")
+model.load_state_dict(torch.load("model_1_epoch_more_data.pt"))
+metric = evaluate.load("accuracy")
+model.eval()
+print("\nEvaluating...")
+model.to(torch.device('cpu'))
+with torch.no_grad():
+    outputs = model(**val_encodings)
+logits = outputs.logits
+predictions = torch.argmax(logits, dim=-1)
+print(metric.compute(predictions=torch.squeeze(predictions), references=torch.squeeze(val_encodings.labels)))
+
+pdb.set_trace()
+
+df_outputs = pd.DataFrame({'gt':  torch.squeeze(val_encodings.labels), 'predictions': torch.squeeze(predictions)}, index=[0])
+df.to_csv("./outputs/predictions_model.csv")
 
 
 
