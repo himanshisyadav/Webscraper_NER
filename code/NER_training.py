@@ -83,9 +83,9 @@ page_2022 = 'https://web.archive.org/web/20220819053652/https://www.apartments.c
 #        'bed_range', 'amenities', 'contact', 'property_link', 'name'],
 #       dtype='object')
 
-
 info_2015 = pd.read_csv("../training_data/Info_2015.csv", sep = '\t')
 info_2022 = pd.read_csv("../training_data/Info_2022.csv", sep = '\t')
+
 info_2015 = info_2015.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
 info_2022 = info_2022.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
 # pdb.set_trace()
