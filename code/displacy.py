@@ -52,7 +52,7 @@ def preprocessor_final(text):
 def display_entities(model_path, content):
     nlp = spacy.load(model_path)
     doc = nlp(content)
-    svg = displacy.render(doc, style="ent", jupyter = False)
+    svg = displacy.render(doc, style="ent", jupyter = True)
     print(svg)
     output_path = Path("./plot.svg") 
     output_path.open("w", encoding="utf-8").write(svg)
