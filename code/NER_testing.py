@@ -49,31 +49,34 @@ def convert_to_ner_data_thiya(df):
 if __name__ == "__main__":
 	info_craig = pd.read_csv("apartments_com_prices_2015_2022.csv")
 	info_thiya = pd.read_csv("pm.csv")
+	info_2016 = pd.read_csv("apartments_com_prices_2016.csv")
 
-	test_data_craig_simple = convert_to_ner_data_craig(info_craig)
-	test_data_thiya_simple = convert_to_ner_data_thiya(info_thiya)
+	pdb.set_trace()
 
-	nlp = spacy.load("models/model-best")
+	# test_data_craig_simple = convert_to_ner_data_craig(info_craig)
+	# test_data_thiya_simple = convert_to_ner_data_thiya(info_thiya)
 
-	# pdb.set_trace()
+	# nlp = spacy.load("models/model-best")
 
-	correct = 0
-	total = 0
+	# # pdb.set_trace()
 
-	for element in test_data_thiya_simple:
-		if isinstance(element[0], str):
-			text = " ".join(element[0].split())
-		else:
-			continue
-		doc = nlp(text)
-		for word in doc.ents:
-			if word.label_ == element[1]:
-				total = total + 1
-				correct = correct + 1
-				# print("Correct", total, correct, word.text, word.label_, element[1])
-			else:
-				total = total + 1
-				print("Incorrect", total, correct, word.text, word.label_, element[1])
+	# correct = 0
+	# total = 0
 
-	print("Corret, Total, Accuracy: ", correct, total, (correct/total) * 100)
+	# for element in test_data_thiya_simple:
+	# 	if isinstance(element[0], str):
+	# 		text = " ".join(element[0].split())
+	# 	else:
+	# 		continue
+	# 	doc = nlp(text)
+	# 	for word in doc.ents:
+	# 		if word.label_ == element[1]:
+	# 			total = total + 1
+	# 			correct = correct + 1
+	# 			# print("Correct", total, correct, word.text, word.label_, element[1])
+	# 		else:
+	# 			total = total + 1
+	# 			print("Incorrect", total, correct, word.text, word.label_, element[1])
+
+	# print("Corret, Total, Accuracy: ", correct, total, (correct/total) * 100)
 

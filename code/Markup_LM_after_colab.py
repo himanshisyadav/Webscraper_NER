@@ -33,7 +33,7 @@ class MarkupLMDataset(Dataset):
         l.append(node_labels)
         
         # # provide to processor
-        encoding = self.processor(nodes=nodes.split("!@#$%^&*"), xpaths=xpaths.split("!@#$%^&*"), node_labels=l, padding="max_length", max_length=self.max_length, return_tensors="pt", truncation=True)
+        encoding = self.processor(nodes=nodes.split("!@#$%^&*"), xpaths=xpaths.split("!@#$%^&*"), node_labels=l, padding="max_length", return_tensors="pt", truncation=True, max_length=self.max_length)
 
         # remove batch dimension
         encoding = {k: v.squeeze() for k, v in encoding.items()}
@@ -118,7 +118,7 @@ def main():
     tokenizer = MarkupLMTokenizerFast.from_pretrained("/project/rcc/hyadav/markuplm-base")
     dataset = MarkupLMDataset(data=data, processor=processor, max_length=512, tokenizer=tokenizer)
 
-    dataloader = DataLoader(dataset, batch_size=10, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=20, shuffle=True)
 
     model = AutoModelForTokenClassification.from_pretrained("/project/rcc/hyadav/markuplm-base", num_labels=7)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -138,7 +138,8 @@ def main():
         for batch in tqdm(dataloader):
             # get the inputs;
             inputs = {k:v.to(device) for k,v in batch.items()}
-
+            for k,v in inputs.items():
+                print(k,v.shape)
             # zero the parameter gradients
             optimizer.zero_grad()
 
