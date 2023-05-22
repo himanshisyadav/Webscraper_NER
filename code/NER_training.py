@@ -1,10 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# Import Packages (Same as before)
-
-
-###################### STEP 1 ###################### 
 #import packages
 import time
 import os
@@ -21,12 +14,11 @@ from os import path
 from pandas import DataFrame
 from random import randint
 
+from spacy.tokens import DocBin
+from tqdm import tqdm
+
 
 # Function to get all the contents from a particular webpage
-
-
-
-
 def get_contents(soup, content_text):
   try:
     parents_blacklist=['[document]','html','head',
@@ -46,12 +38,7 @@ def get_contents(soup, content_text):
     content_text.append('')
     pass
 
-
-
 # Function to get phone numbers, address and prices using regular expressions
-
-
-
 def get_regex_data(webpage):
     nlp = spacy.load('en_core_web_sm')
     page=requests.get(webpage)
@@ -67,30 +54,6 @@ def get_regex_data(webpage):
     print("\nAddresses are:", address)
     print("\nPrices are:" , prices)
 
-
-
-
-
-page_2015 ="https://web.archive.org/web/20150217144133/https://www.apartments.com/chicago-il/"
-page_2022 = 'https://web.archive.org/web/20220819053652/https://www.apartments.com/chicago-il/'
-
-
-# Columns in the 2015 and 2022 dataframes
-# Index(['Unnamed: 0', 'snapshot_link', 'owner', 'address', 'price_range',
-#        'bed_range', 'amenities', 'contact', 'property_link', 'name'],
-#       dtype='object')
-
-# info_2015 = pd.read_csv("../training_data/Info_2015.csv", sep = '\t')
-# info_2022 = pd.read_csv("../training_data/Info_2022.csv", sep = '\t')
-
-# info_2015 = info_2015.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
-# info_2022 = info_2022.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
-
-info_labeled_2015 = pd.read_csv("../training_data/nodes_xpaths/Labeled_20150217144133_nodes_xpaths.csv", delimiter=",")
-info_labeled_2022 = pd.read_csv("../training_data/nodes_xpaths/Labeled_20220121035604_nodes_xpaths.csv", delimiter=",")
-info_labeled_2015 = info_labeled_2015.drop(['xpaths'], axis=1)
-info_labeled_2022 = info_labeled_2022.drop(['xpaths'], axis=1)
-
 def convert_to_ner_data(df):
     data = list()
     for col in df.columns:
@@ -103,60 +66,54 @@ def convert_to_ner_data_labeled(df):
     data = data + df.apply(lambda x: (x['nodes'], {"entities": [(0, len(str(x['nodes'])), x['Labels'])]}), axis = 1).to_list()
     return data
 
+def convert_to_doc(data, save_format):
+    nlp = spacy.blank('en') # load a new spacy model
+    db = DocBin() # create a DocBin object
+    for text, annot in tqdm(data): # data in previous format
+        doc = nlp.make_doc(str(text)) # create doc object from text
+        ents = []
+        for start, end, label in annot['entities']: # add character indexes
+            span = doc.char_span(start, end, label=label, alignment_mode='contract')
+            if span is None:
+                print('Skipping entity')
+            else:
+                ents.append(span)
+        try:
+            doc.ents = ents # label the text with the ents
+            db.add(doc)
+        except:
+            print(text, annot)
+    save_file = "./" + save_format + ".spacy"      
+    db.to_disk(save_file) # save the docbin object
 
-# training_data = convert_to_ner_data(info_2015)
-# test_data = convert_to_ner_data(info_2022)
-
-
-train_data = convert_to_ner_data_labeled(info_labeled_2015)
-valid_data = convert_to_ner_data_labeled(info_labeled_2022)
-
-from spacy.tokens import DocBin
-from tqdm import tqdm
-nlp = spacy.blank('en') # load a new spacy model
-db = DocBin() # create a DocBin object
-for text, annot in tqdm(train_data): # data in previous format
-    doc = nlp.make_doc(str(text)) # create doc object from text
-    ents = []
-    for start, end, label in annot['entities']: # add character indexes
-        span = doc.char_span(start, end, label=label, alignment_mode='contract')
-        if span is None:
-            print('Skipping entity')
-        else:
-            ents.append(span)
-    try:
-        doc.ents = ents # label the text with the ents
-        db.add(doc)
-    except:
-        print(text, annot)
-        
-db.to_disk('./train.spacy') # save the docbin object
-
-for text, annot in tqdm(valid_data): # data in previous format
-    doc = nlp.make_doc(str(text)) # create doc object from text
-    ents = []
-    for start, end, label in annot['entities']: # add character indexes
-        span = doc.char_span(start, end, label=label, alignment_mode='contract')
-        if span is None:
-            print('Skipping entity')
-        else:
-            ents.append(span)
-    try:
-        doc.ents = ents # label the text with the ents
-        db.add(doc)
-    except:
-        print(text, annot)
+def main():
+    # page_2015 ="https://web.archive.org/web/20150217144133/https://www.apartments.com/chicago-il/"
+    # page_2022 = 'https://web.archive.org/web/20220819053652/https://www.apartments.com/chicago-il/'
 
 
+    # Columns in the 2015 and 2022 dataframes
+    # Index(['Unnamed: 0', 'snapshot_link', 'owner', 'address', 'price_range',
+    #        'bed_range', 'amenities', 'contact', 'property_link', 'name'],
+    #       dtype='object')
 
-db.to_disk('./valid.spacy')
+    # info_2015 = pd.read_csv("../training_data/Info_2015.csv", sep = '\t')
+    # info_2022 = pd.read_csv("../training_data/Info_2022.csv", sep = '\t')
 
+    # info_2015 = info_2015.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
+    # info_2022 = info_2022.drop(['snapshot_link', 'name', 'owner', 'amenities', 'property_link'], axis=1)
+    # training_data = convert_to_ner_data(info_2015)
+    # test_data = convert_to_ner_data(info_2022)
 
+    info_labeled_2015 = pd.read_csv("../training_data/nodes_xpaths/Labeled_20150217144133_nodes_xpaths.csv", delimiter=",")
+    info_labeled_2022 = pd.read_csv("../training_data/nodes_xpaths/Labeled_20220121035604_nodes_xpaths.csv", delimiter=",")
+    info_labeled_2015 = info_labeled_2015.drop(['xpaths'], axis=1)
+    info_labeled_2022 = info_labeled_2022.drop(['xpaths'], axis=1)
 
+    train_data = convert_to_ner_data_labeled(info_labeled_2015)
+    valid_data = convert_to_ner_data_labeled(info_labeled_2022)
 
-# python -m spacy init fill-config base_config.cfg data/config.cfg
+    convert_to_doc(train_data, "train")
+    convert_to_doc(valid_data, "valid")
 
-
-
-
-# pythonn -m spacy train data/config.cfg --paths.train ./train.spacy --paths.dev ./valid.spacy
+if __name__ == "__main__":
+    main()
