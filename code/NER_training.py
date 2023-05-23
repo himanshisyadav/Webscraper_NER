@@ -86,6 +86,13 @@ def convert_to_doc(data, save_format):
     save_file = "./" + save_format + ".spacy"      
     db.to_disk(save_file) # save the docbin object
 
+def convert_to_full_text_ner(df):
+    string_info = df["nodes"].values.astype("str") 
+    text = ' '.join(string_info)
+    data = list()
+    data = data + df.apply(lambda x: (x['nodes'], {"entities": [(0, len(str(x['nodes'])), x['Labels'])]}), axis = 1).to_list()
+    return data
+
 def main():
     # page_2015 ="https://web.archive.org/web/20150217144133/https://www.apartments.com/chicago-il/"
     # page_2022 = 'https://web.archive.org/web/20220819053652/https://www.apartments.com/chicago-il/'
@@ -109,11 +116,15 @@ def main():
     info_labeled_2015 = info_labeled_2015.drop(['xpaths'], axis=1)
     info_labeled_2022 = info_labeled_2022.drop(['xpaths'], axis=1)
 
-    train_data = convert_to_ner_data_labeled(info_labeled_2015)
-    valid_data = convert_to_ner_data_labeled(info_labeled_2022)
+    # convert_to_full_text_ner(info_labeled_2015)
+    # convert_to_full_text_ner(info_labeled_2022)
 
-    convert_to_doc(train_data, "train")
-    convert_to_doc(valid_data, "valid")
+    train_data = convert_to_ner_data_labeled(info_labeled_2015)
+    print(train_data)
+    # valid_data = convert_to_ner_data_labeled(info_labeled_2022)
+
+    # convert_to_doc(train_data, "train")
+    # convert_to_doc(valid_data, "valid")
 
 if __name__ == "__main__":
     main()
