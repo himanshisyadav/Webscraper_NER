@@ -1,24 +1,26 @@
 ,Address,Price,Beds,Contact
-0,161 W Kinzie St Chicago  6,"$1,835 - $6,545",Studio - 2 Br,877-474-5097
-1,1350 N Lake Shore Dr Chicago  6,"$1,191 - $3,032",Studio - 2 Br,312-462-0403
-2,71 W Hubbard St Chicago  6,"$1,902 - $6,574",Studio - 3 Br,312-219-9513
-3,850 S Clark St Chicago  6,"$1,619 - $3,565",Studio - 2 Br,312-462-1938
-4,400 E South Water St Chicago  6,"$1,556 - $3,399",Studio - 2 Br,866-599-7868
-5,225 N Columbus Dr Chicago  6,"$1,829 - $5,205",Studio - 2 Br,866-933-3491
-6,840 W Blackhawk St Chicago  6,"$1,857 - $3,898",Studio - 2 Br,866-958-8596
-7,707 N Wells St Chicago  6,"$2,707 - $5,621",1-3 Br,844-837-3913
-8,5140 S Hyde Park Blvd Chicago  6,"$1,199 - $5,479",1-3 Br,773-432-4830
-9,123 N Des Plaines St Chicago  6,"$1,895 - $4,369",Studio - 3 Br,312-957-4484
-10,1130 S Michigan Ave Chicago  6,"$1,295 - $3,491",Studio - 2 Br,866-610-8317
-11,555 W Madison St Chicago  6,"$1,405 - $3,010",Studio - 2 Br,888-692-0211
-12,200 E Illinois St Chicago  6,"$1,912 - $12,878",Studio - 4 Br,773-273-6395
-13,400 N McClurg Ct Chicago  6,"$1,662 - $2,727",Studio - 2 Br,877-421-7889
-14,900 S Clark St Chicago  6,"$1,446 - $3,495",Studio - 3 Br,877-834-2986
-15,360 E South Water St Chicago  6,"$1,624 - $3,980",Studio - 2 Br,312-288-8069
-16,1 W Superior St Chicago  6,"$1,645 - $5,581",Studio - 2 Br,312-219-9516
-17,345 E Wacker Dr Chicago  6,"$1,565 - $3,983",Studio - 3 Br,773-904-9571
-18,200 E Chestnut St Chicago  6,"$1,280 - $5,080",Studio - 2 Br,708-315-6519
-19,805 N LaSalle Dr Chicago  6,"$1,600 - $5,100",Studio - 2 Br,872-206-3038
-20,220 W Illinois St Chicago  6,"$2,025 - $4,240",Studio - 2 Br,773-492-6656
-21,910 W Huron St Chicago  6,"$1,865 - $3,240",Studio - 4 Br,312-646-4936
-22,111 W Wacker Dr Chicago  6,"$2,011 - $11,733",Studio - 3 Br,708-546-4173
+0,161 W Kinzie St Chicago  60654,"$1,835 - $6,545",Studio - 2 Br,877-474-5097
+1,1350 N Lake Shore Dr Chicago  60610,"$1,191 - $3,032",Studio - 2 Br,312-462-0403
+2,71 W Hubbard St Chicago  60654,"$1,902 - $6,574",Studio - 3 Br,312-219-9513
+3,850 S Clark St Chicago  60605,"$1,619 - $3,565",Studio - 2 Br,312-462-1938
+4,845-845 N State St Chicago  60610,"$1,723 - $4,064",Studio - 2 Br,312-265-3057
+5,400 E South Water St Chicago  60601,"$1,556 - $3,399",Studio - 2 Br,866-599-7868
+6,225 N Columbus Dr Chicago  60601,"$1,829 - $5,205",Studio - 2 Br,866-933-3491
+7,3402-3453 N Elaine Pl Chicago  60657,"$1,575 - $2,265",1-2 Br,844-889-9247
+8,840 W Blackhawk St Chicago  60642,"$1,857 - $3,898",Studio - 2 Br,866-958-8596
+9,707 N Wells St Chicago  60654,"$2,707 - $5,621",1-3 Br,844-837-3913
+10,5140 S Hyde Park Blvd Chicago  60615,"$1,199 - $5,479",1-3 Br,773-432-4830
+11,123 N Des Plaines St Chicago  60661,"$1,895 - $4,369",Studio - 3 Br,312-957-4484
+12,1130 S Michigan Ave Chicago  60605,"$1,295 - $3,491",Studio - 2 Br,866-610-8317
+13,555 W Madison St Chicago  60661,"$1,405 - $3,010",Studio - 2 Br,888-692-0211
+14,200 E Illinois St Chicago  60611,"$1,912 - $12,878",Studio - 4 Br,773-273-6395
+15,400 N McClurg Ct Chicago  60611,"$1,662 - $2,727",Studio - 2 Br,877-421-7889
+16,900 S Clark St Chicago  60605,"$1,446 - $3,495",Studio - 3 Br,877-834-2986
+17,360 E South Water St Chicago  60601,"$1,624 - $3,980",Studio - 2 Br,312-288-8069
+18,1 W Superior St Chicago  60654,"$1,645 - $5,581",Studio - 2 Br,312-219-9516
+19,345 E Wacker Dr Chicago  60601,"$1,565 - $3,983",Studio - 3 Br,773-904-9571
+20,200 E Chestnut St Chicago  60611,"$1,280 - $5,080",Studio - 2 Br,708-315-6519
+21,805 N LaSalle Dr Chicago  60610,"$1,600 - $5,100",Studio - 2 Br,872-206-3038
+22,220 W Illinois St Chicago  60654,"$2,025 - $4,240",Studio - 2 Br,773-492-6656
+23,910 W Huron St Chicago  60642,"$1,865 - $3,240",Studio - 4 Br,312-646-4936
+24,111 W Wacker Dr Chicago  60601,"$2,011 - $11,733",Studio - 3 Br,708-546-4173
