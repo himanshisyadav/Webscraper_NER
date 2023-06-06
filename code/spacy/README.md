@@ -6,7 +6,7 @@
 git clone git@github.com:himanshisyadav/Webscraper_NER.git
 ```
 
-2. Create a ```conda``` environment using the ```requirements.txt``` file in the [code](code/) folder.
+2. Create a ```conda``` environment using the ```requirements.txt``` file in the [code](../code/) folder.
 ```
 cd code/
 conda create --name <env> --file requirements.txt
